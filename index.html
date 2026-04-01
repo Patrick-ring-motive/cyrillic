@@ -1,410 +1,477 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Кириллица — Latin → Cyrillic</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Unbounded:wght@300;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0d0d0f;
-    --surface: #141418;
-    --border: #2a2a35;
-    --accent: #c8ff00;
-    --accent-dim: #7a9900;
-    --text: #e8e8f0;
-    --muted: #5a5a72;
-    --red: #ff3c5a;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кириллица — Latin → Cyrillic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Unbounded:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --surface: #141418;
+      --border: #2a2a35;
+      --accent: #c8ff00;
+      --accent-dim: #7a9900;
+      --text: #e8e8f0;
+      --muted: #5a5a72;
+      --red: #ff3c5a;
+    }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
+    - {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-background: var(–bg);
-color: var(–text);
-font-family: ‘Share Tech Mono’, monospace;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 2rem 1rem;
-overflow-x: hidden;
-}
+    body {
+      background: var(–bg);
+      color: var(–text);
+      font-family: ‘Share Tech Mono’, monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
 
-/* Scanline overlay */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background: repeating-linear-gradient(
-to bottom,
-transparent 0px,
-transparent 3px,
-rgba(0,0,0,0.08) 3px,
-rgba(0,0,0,0.08) 4px
-);
-pointer-events: none;
-z-index: 100;
-}
+    /* Scanline overlay */
+    body::before {
+      content: ‘’;
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(to bottom,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 0, 0, 0.08) 3px,
+          rgba(0, 0, 0, 0.08) 4px);
+      pointer-events: none;
+      z-index: 100;
+    }
 
-header {
-text-align: center;
-margin-bottom: 3rem;
-}
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
 
-.title {
-font-family: ‘Unbounded’, sans-serif;
-font-weight: 700;
-font-size: clamp(1.4rem, 5vw, 2.6rem);
-letter-spacing: 0.04em;
-line-height: 1.1;
-}
+    .title {
+      font-family: ‘Unbounded’, sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 5vw, 2.6rem);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
 
-.title .latin { color: var(–muted); }
-.title .arrow { color: var(–accent); margin: 0 0.3em; }
-.title .cyrillic { color: var(–accent); }
+    .title .latin {
+      color: var(–muted);
+    }
 
-.subtitle {
-margin-top: 0.6rem;
-color: var(–muted);
-font-size: 0.75rem;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-}
+    .title .arrow {
+      color: var(–accent);
+      margin: 0 0.3em;
+    }
 
-.card {
-width: 100%;
-max-width: 780px;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 2px;
-padding: 2rem;
-position: relative;
-}
+    .title .cyrillic {
+      color: var(–accent);
+    }
 
-/* Corner decorations */
-.card::before, .card::after {
-content: ‘’;
-position: absolute;
-width: 12px; height: 12px;
-border-color: var(–accent);
-border-style: solid;
-}
-.card::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-.card::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+    .subtitle {
+      margin-top: 0.6rem;
+      color: var(–muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
 
-.panels {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 1.5rem;
-}
+    .card {
+      width: 100%;
+      max-width: 780px;
+      background: var(–surface);
+      border: 1px solid var(–border);
+      border-radius: 2px;
+      padding: 2rem;
+      position: relative;
+    }
 
-@media (max-width: 560px) {
-.panels { grid-template-columns: 1fr; }
-}
+    /* Corner decorations */
+    .card::before,
+    .card::after {
+      content: ‘’;
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-color: var(–accent);
+      border-style: solid;
+    }
 
-.panel label {
-display: block;
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(–muted);
-margin-bottom: 0.5rem;
-}
+    .card::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
 
-textarea {
-width: 100%;
-height: 180px;
-background: var(–bg);
-border: 1px solid var(–border);
-color: var(–text);
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 1rem;
-padding: 0.9rem;
-resize: vertical;
-outline: none;
-border-radius: 2px;
-transition: border-color 0.2s;
-line-height: 1.6;
-}
+    .card::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 2px 2px 0;
+    }
 
-textarea:focus {
-border-color: var(–accent-dim);
-}
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
 
-#output {
-color: var(–accent);
-cursor: pointer;
-position: relative;
-}
+    @media (max-width: 560px) {
+      .panels {
+        grid-template-columns: 1fr;
+      }
+    }
 
-#output:hover { border-color: var(–accent); }
+    .panel label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(–muted);
+      margin-bottom: 0.5rem;
+    }
 
-.controls {
-display: flex;
-align-items: center;
-gap: 1rem;
-margin-top: 1.5rem;
-flex-wrap: wrap;
-}
+    textarea {
+      width: 100%;
+      height: 180px;
+      background: var(–bg);
+      border: 1px solid var(–border);
+      color: var(–text);
+      font-family: ‘Share Tech Mono’, monospace;
+      font-size: 1rem;
+      padding: 0.9rem;
+      resize: vertical;
+      outline: none;
+      border-radius: 2px;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
 
-.btn {
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 0.8rem;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-padding: 0.6rem 1.4rem;
-border-radius: 2px;
-border: 1px solid;
-cursor: pointer;
-transition: all 0.15s;
-}
+    textarea:focus {
+      border-color: var(–accent-dim);
+    }
 
-.btn-primary {
-background: var(–accent);
-color: #000;
-border-color: var(–accent);
-}
-.btn-primary:hover {
-background: #d9ff33;
-box-shadow: 0 0 16px rgba(200,255,0,0.3);
-}
+    #output {
+      color: var(–accent);
+      cursor: pointer;
+      position: relative;
+    }
 
-.btn-ghost {
-background: transparent;
-color: var(–muted);
-border-color: var(–border);
-}
-.btn-ghost:hover {
-color: var(–text);
-border-color: var(–muted);
-}
+    #output:hover {
+      border-color: var(–accent);
+    }
 
-.stats {
-margin-left: auto;
-font-size: 0.72rem;
-color: var(–muted);
-}
-.stats span {
-color: var(–accent);
-font-weight: bold;
-}
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
 
-.toast {
-position: fixed;
-bottom: 2rem;
-left: 50%;
-transform: translateX(-50%) translateY(20px);
-background: var(–accent);
-color: #000;
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 0.78rem;
-letter-spacing: 0.12em;
-padding: 0.5rem 1.2rem;
-border-radius: 2px;
-opacity: 0;
-transition: opacity 0.2s, transform 0.2s;
-pointer-events: none;
-z-index: 200;
-}
-.toast.show {
-opacity: 1;
-transform: translateX(-50%) translateY(0);
-}
+    .btn {
+      font-family: ‘Share Tech Mono’, monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
 
-/* Diff highlight in output */
-.changed { background: rgba(200,255,0,0.12); border-radius: 2px; }
+    .btn-primary {
+      background: var(–accent);
+      color: #000;
+      border-color: var(–accent);
+    }
 
-.map-section {
-margin-top: 2rem;
-border-top: 1px solid var(–border);
-padding-top: 1.5rem;
-}
+    .btn-primary:hover {
+      background: #d9ff33;
+      box-shadow: 0 0 16px rgba(200, 255, 0, 0.3);
+    }
 
-.map-label {
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(–muted);
-margin-bottom: 0.9rem;
-}
+    .btn-ghost {
+      background: transparent;
+      color: var(–muted);
+      border-color: var(–border);
+    }
 
-.map-grid {
-display: flex;
-flex-wrap: wrap;
-gap: 0.4rem;
-}
+    .btn-ghost:hover {
+      color: var(–text);
+      border-color: var(–muted);
+    }
 
-.map-pill {
-background: var(–bg);
-border: 1px solid var(–border);
-border-radius: 2px;
-padding: 0.25rem 0.6rem;
-font-size: 0.8rem;
-white-space: nowrap;
-transition: border-color 0.15s;
-}
-.map-pill:hover { border-color: var(–accent-dim); }
-.map-pill .from { color: var(–muted); }
-.map-pill .sep  { color: var(–border); margin: 0 0.25rem; }
-.map-pill .to   { color: var(–accent); }
+    .stats {
+      margin-left: auto;
+      font-size: 0.72rem;
+      color: var(–muted);
+    }
 
-.mode-toggle {
-display: flex;
-gap: 0.5rem;
-align-items: center;
-font-size: 0.7rem;
-color: var(–muted);
-letter-spacing: 0.1em;
-}
-.mode-toggle input[type=checkbox] { accent-color: var(–accent); }
-</style>
+    .stats span {
+      color: var(–accent);
+      font-weight: bold;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(–accent);
+      color: #000;
+      font-family: ‘Share Tech Mono’, monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Diff highlight in output */
+    .changed {
+      background: rgba(200, 255, 0, 0.12);
+      border-radius: 2px;
+    }
+
+    .map-section {
+      margin-top: 2rem;
+      border-top: 1px solid var(–border);
+      padding-top: 1.5rem;
+    }
+
+    .map-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(–muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .map-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .map-pill {
+      background: var(–bg);
+      border: 1px solid var(–border);
+      border-radius: 2px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      transition: border-color 0.15s;
+    }
+
+    .map-pill:hover {
+      border-color: var(–accent-dim);
+    }
+
+    .map-pill .from {
+      color: var(–muted);
+    }
+
+    .map-pill .sep {
+      color: var(–border);
+      margin: 0 0.25rem;
+    }
+
+    .map-pill .to {
+      color: var(–accent);
+    }
+
+    .mode-toggle {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(–muted);
+      letter-spacing: 0.1em;
+    }
+
+    .mode-toggle input[type=checkbox] {
+      accent-color: var(–accent);
+    }
+
+  </style>
 
 </head>
+
 <body>
 
-<header>
-  <div class="title">
-    <span class="latin">Latin</span>
-    <span class="arrow">→</span>
-    <span class="cyrillic">Кириллица</span>
-  </div>
-  <div class="subtitle">Homoglyph substitution encoder</div>
-</header>
-
-<div class="card">
-  <div class="panels">
-    <div class="panel">
-      <label>Input — Latin</label>
-      <textarea id="input" placeholder="Type or paste text here…" spellcheck="false"></textarea>
+  <header>
+    <div class="title">
+      <span class="latin">Latin</span>
+      <span class="arrow">→</span>
+      <span class="cyrillic">Кириллица</span>
     </div>
-    <div class="panel">
-      <label>Output — Сyrillic substituted ↙ click to copy</label>
-      <textarea id="output" readonly placeholder="Encoded output appears here…"></textarea>
+    <div class="subtitle">Homoglyph substitution encoder</div>
+  </header>
+
+  <div class="card">
+    <div class="panels">
+      <div class="panel">
+        <label>Input — Latin</label>
+        <textarea id="input" placeholder="Type or paste text here…" spellcheck="false"></textarea>
+      </div>
+      <div class="panel">
+        <label>Output — Сyrillic substituted ↙ click to copy</label>
+        <textarea id="output" readonly placeholder="Encoded output appears here…"></textarea>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-primary" onclick="convert()">Convert</button>
+      <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+      <label class="mode-toggle">
+        <input type="checkbox" id="liveMode" checked onchange="onLiveToggle()">
+        Live mode
+      </label>
+      <div class="stats" id="stats"></div>
+    </div>
+
+    <div class="map-section">
+      <div class="map-label">Substitution map</div>
+      <div class="map-grid" id="mapGrid"></div>
     </div>
   </div>
 
-  <div class="controls">
-    <button class="btn btn-primary" onclick="convert()">Convert</button>
-    <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
-    <label class="mode-toggle">
-      <input type="checkbox" id="liveMode" checked onchange="onLiveToggle()">
-      Live mode
-    </label>
-    <div class="stats" id="stats"></div>
-  </div>
+  <div class="toast" id="toast">Copied to clipboard</div>
 
-  <div class="map-section">
-    <div class="map-label">Substitution map</div>
-    <div class="map-grid" id="mapGrid"></div>
-  </div>
-</div>
+  <script>
+    // Full substitution map: Latin → Cyrillic homoglyphs
+    const MAP_UPPER = {
+      'A': 'А', // U+0410
+      'B': 'В', // U+0412
+      'E': 'Е', // U+0415
+      'K': 'К', // U+041A
+      'M': 'М', // U+041C
+      'H': 'Н', // U+041D
+      'O': 'О', // U+041E
+      'P': 'Р', // U+0420
+      'C': 'С', // U+0421
+      'T': 'Т', // U+0422
+      'Y': 'Ү', // U+0423 + U+0435
+      'Q': 'Ԛ',
+      'X': 'Х', // U+0425
+      'W': 'Ԝ'
+    };
 
-<div class="toast" id="toast">Copied to clipboard</div>
+    const MAP_LOWER = {
+      'a': 'а', // U+0430
+      'e': 'е', // U+0435
+      'o': 'о', // U+043E
+      'p': 'р', // U+0440
+      'c': 'с', // U+0441
+      'x': 'х', // U+0445
+      'y': 'у', // U+0443 + U+0435
+      'q': 'ԛ',
+      'w': 'ԝ',
+    };
 
-<script>
-// Full substitution map: Latin → Cyrillic homoglyphs
-const MAP_UPPER = {
-  'A': 'А', // U+0410
-  'B': 'В', // U+0412
-  'E': 'Е', // U+0415
-  'K': 'К', // U+041A
-  'M': 'М', // U+041C
-  'H': 'Н', // U+041D
-  'O': 'О', // U+041E
-  'P': 'Р', // U+0420
-  'C': 'С', // U+0421
-  'T': 'Т', // U+0422
-  'Y': 'Ү', // U+0423 + U+0435
-  'Q': 'Ԛ',
-  'X': 'Х', // U+0425
-  'W': 'Ԝ'
-};
+    const FULL_MAP = {
+      ...MAP_UPPER,
+      ...MAP_LOWER
+    };
 
-const MAP_LOWER = {
-  'a': 'а', // U+0430
-  'e': 'е', // U+0435
-  'o': 'о', // U+043E
-  'p': 'р', // U+0440
-  'c': 'с', // U+0441
-  'x': 'х', // U+0445
-  'y': 'у', // U+0443 + U+0435
-  'q': 'ԛ',
-  'w': 'ԝ',
-};
+    function doConvert(text) {
+      let count = 0;
+      const result = text.split('').map(ch => {
+        if (FULL_MAP[ch]) {
+          count++;
+          return FULL_MAP[ch];
+        }
+        return ch;
+      }).join('');
+      return {
+        result,
+        count
+      };
+    }
 
-const FULL_MAP = { ...MAP_UPPER, ...MAP_LOWER };
+    function convert() {
+      const text = document.getElementById('input').value;
+      const {
+        result,
+        count
+      } = doConvert(text);
+      document.getElementById('output').value = result;
+      const total = text.length;
+      document.getElementById('stats').innerHTML =
+        total === 0 ? '' :
+        `<span>${count}</span> / ${total} chars substituted`;
+    }
 
-function doConvert(text) {
-  let count = 0;
-  const result = text.split('').map(ch => {
-    if (FULL_MAP[ch]) { count++; return FULL_MAP[ch]; }
-    return ch;
-  }).join('');
-  return { result, count };
-}
+    function clearAll() {
+      document.getElementById('input').value = '';
+      document.getElementById('output').value = '';
+      document.getElementById('stats').innerHTML = '';
+    }
 
-function convert() {
-  const text = document.getElementById('input').value;
-  const { result, count } = doConvert(text);
-  document.getElementById('output').value = result;
-  const total = text.length;
-  document.getElementById('stats').innerHTML =
-    total === 0 ? '' :
-    `<span>${count}</span> / ${total} chars substituted`;
-}
+    // Live mode
+    document.getElementById('input').addEventListener('input', () => {
+      if (document.getElementById('liveMode').checked) convert();
+    });
 
-function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').value = '';
-  document.getElementById('stats').innerHTML = '';
-}
+    function onLiveToggle() {
+      if (document.getElementById('liveMode').checked) convert();
+    }
 
-// Live mode
-document.getElementById('input').addEventListener('input', () => {
-  if (document.getElementById('liveMode').checked) convert();
-});
+    // Click output to copy
+    document.getElementById('output').addEventListener('click', async function() {
+      const val = this.value;
+      if (!val) return;
+      try {
+        await navigator.clipboard.writeText(val);
+        showToast();
+      } catch {
+        this.select();
+        document.execCommand('copy');
+        showToast();
+      }
+    });
 
-function onLiveToggle() {
-  if (document.getElementById('liveMode').checked) convert();
-}
+    function showToast() {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 1800);
+    }
 
-// Click output to copy
-document.getElementById('output').addEventListener('click', async function() {
-  const val = this.value;
-  if (!val) return;
-  try {
-    await navigator.clipboard.writeText(val);
-    showToast();
-  } catch {
-    this.select();
-    document.execCommand('copy');
-    showToast();
-  }
-});
+    // Build map grid
+    function buildMapGrid() {
+      const grid = document.getElementById('mapGrid');
+      Object.entries(FULL_MAP).forEach(([from, to]) => {
+        const pill = document.createElement('div');
+        pill.className = 'map-pill';
+        pill.title = [...to].map(ch => `U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')}`).join(' ');
+        pill.innerHTML = `<span class="from">${from}</span><span class="sep">→</span><span class="to">${to}</span>`;
+        grid.appendChild(pill);
+      });
+    }
 
-function showToast() {
-  const t = document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1800);
-}
+    buildMapGrid();
 
-// Build map grid
-function buildMapGrid() {
-  const grid = document.getElementById('mapGrid');
-  Object.entries(FULL_MAP).forEach(([from, to]) => {
-    const pill = document.createElement('div');
-    pill.className = 'map-pill';
-    pill.title = [...to].map(ch => `U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')}`).join(' ');
-    pill.innerHTML = `<span class="from">${from}</span><span class="sep">→</span><span class="to">${to}</span>`;
-    grid.appendChild(pill);
-  });
-}
-
-buildMapGrid();
-</script>
+  </script>
 
 </body>
+
 </html>
